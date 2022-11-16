@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from './users/users.module';
-import { EmailModule } from './email/email.module';
 import { ConfigModule } from '@nestjs/config';
 import emailConfig from './config/emailConfig';
 import { validationSchema } from './config/validationSchema';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
@@ -14,6 +14,7 @@ import { validationSchema } from './config/validationSchema';
       isGlobal: true,
       validationSchema,
     }),
+    MongooseModule.forRoot(''),
   ],
   controllers: [],
   providers: [],

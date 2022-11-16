@@ -1,34 +1,54 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { EmailService } from 'src/email/email.service';
 import * as uuid from 'uuid';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserInfo } from './UserInfo';
+import { User, UserDocument } from './schemas/user.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { ulid } from 'ulid';
 
 @Injectable()
 export class UsersService {
-  constructor(private emailService: EmailService) {}
+  constructor(
+    private emailService: EmailService,
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+  ) {}
 
   async createUser(name: string, email: string, password: string) {
-    await this.checkUserExists(email);
-
+    const userExist = await this.checkUserExists(email);
+    if (userExist) {
+      throw new UnprocessableEntityException(
+        '해당 이메일로는 가입할 수 없습니다.',
+      );
+    }
     const signupVerifyToken = uuid.v1();
 
     await this.saveUser(name, email, password, signupVerifyToken);
     await this.sendMemberJoinEmail(email, signupVerifyToken);
   }
 
-  private checkUserExists(email: string) {
-    return false; //DB 연동 후 구현
+  private async checkUserExists(email: string): Promise<boolean> {
+    const user = await this.userModel.findOne({ email: email });
+    return user !== null;
   }
 
-  private saveUser(
+  private async saveUser(
     name: string,
     email: string,
     password: string,
     signupVerifyToken: string,
   ) {
-    return false; //DB 연동 후 구현
+    const user = new this.userModel();
+
+    user.id = ulid();
+    user.name = name;
+    user.email = email;
+    user.password = password;
+    user.signupVerifyToken = signupVerifyToken;
+
+    await user.save();
   }
 
   private async sendMemberJoinEmail(email: string, signupVerifyToken: string) {
