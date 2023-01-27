@@ -4,7 +4,7 @@ import {
   DeletePersonInput,
   Person,
   UpdatePersonInput,
-} from 'src/schemas/person.schema';
+} from 'src/models/person/schemas/person.schema';
 import { PersonService } from './person.service';
 
 @Resolver('Person')

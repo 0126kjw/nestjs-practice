@@ -5,7 +5,7 @@ import {
   DeletePersonInput,
   Person,
   UpdatePersonInput,
-} from '../schemas/person.schema';
+} from './schemas/person.schema';
 
 @Injectable()
 export class PersonService {
