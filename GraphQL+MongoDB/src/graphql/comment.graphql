@@ -1,0 +1,20 @@
+scalar DateTime
+
+type Comment {
+  id: String!
+  name: String!
+  content: String
+  userId: String
+  createdAt: String
+  updatedAt: String
+}
+
+input CreateCommentInput {
+  name: String!
+  content: String
+  userId: String
+}
+
+type Mutation {
+  addComment(comment: CreateCommentInput): Comment
+}
