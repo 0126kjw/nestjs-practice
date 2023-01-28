@@ -5,8 +5,8 @@ type Comment {
   name: String!
   content: String
   userId: String
-  createdAt: String
-  updatedAt: String
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 input CreateCommentInput {
