@@ -18,6 +18,10 @@ export class PersonService {
     return this.personModel.find().exec();
   }
 
+  async findUserId(id) {
+    return this.personModel.findById(id);
+  }
+
   async addPerson(person: CreatePersonInput): Promise<Person> {
     return this.personModel.create(person);
   }

@@ -7,5 +7,6 @@ import { PersonService } from './person.service';
 @Module({
   imports: [DatabaseModule],
   providers: [PersonResolver, PersonService, ...PersonProviders],
+  exports: [PersonService],
 })
 export class PersonModule {}

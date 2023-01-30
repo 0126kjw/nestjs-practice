@@ -10,10 +10,6 @@ export class CommentsService {
   ) {}
 
   async addComment(comment: CreateCommentInput): Promise<Comment> {
-    const validUserId = this.commentModel.findById(comment.userId);
-    if (!validUserId) {
-      return Error.ValidationError.messages();
-    }
     return this.commentModel.create(comment);
   }
 }
