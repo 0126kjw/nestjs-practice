@@ -2,7 +2,7 @@ scalar DateTime
 
 type Comment {
   id: String!
-  name: String!
+  author: String!
   content: String
   userId: String
   createdAt: DateTime
@@ -10,11 +10,21 @@ type Comment {
 }
 
 input CreateCommentInput {
-  name: String!
+  author: String!
   content: String
   userId: String
 }
 
+input FindCommentInput {
+  id: String!
+}
+
+input DeleteCommentInput {
+  id: String!
+  author: String!
+}
+
 type Mutation {
   addComment(comment: CreateCommentInput): Comment
+  deleteComment(comment: DeleteCommentInput): Comment
 }

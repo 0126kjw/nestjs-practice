@@ -5,7 +5,7 @@ import { Document } from 'mongoose';
 export const CommentSchema = new mongoose.Schema(
   {
     _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
-    name: String,
+    author: String,
     content: String,
     userId: String,
     createAt: Date,
@@ -20,7 +20,7 @@ export class Comment extends Document {
   _id: string;
 
   @Field()
-  name: string;
+  author: string;
 
   @Field()
   content: string;
@@ -38,11 +38,24 @@ export class Comment extends Document {
 @ObjectType()
 export class CreateCommentInput {
   @Field()
-  name: string;
+  author: string;
 
   @Field()
   content: string;
 
   @Field()
   userId: string;
+}
+
+@ObjectType()
+export class DeleteCommentInput {
+  @Field()
+  id: string;
+  author: string;
+}
+
+@ObjectType()
+export class FindCommentInput {
+  @Field()
+  id: string;
 }

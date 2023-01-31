@@ -2,7 +2,12 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { Error } from 'mongoose';
 import { PersonService } from '../person/person.service';
 import { CommentsService } from './comments.service';
-import { Comment, CreateCommentInput } from './schemas/comments.schema';
+import {
+  Comment,
+  CreateCommentInput,
+  DeleteCommentInput,
+  FindCommentInput,
+} from './schemas/comments.schema';
 
 @Resolver('Comment')
 export class CommentResolver {
@@ -18,5 +23,16 @@ export class CommentResolver {
       return Error.ValidationError.messages();
     }
     return await this.commentService.addComment(comment);
+  }
+
+  @Mutation(() => Comment)
+  async deleteComment(@Args('comment') comment: DeleteCommentInput) {
+    const validCommentId = await this.commentService.findComment(comment);
+    if (!validCommentId) {
+      return Error.ValidationError.messages;
+    } else if (comment.author != validCommentId.author) {
+      return Error.ValidationError.messages;
+    }
+    return await this.commentService.deleteComment(comment);
   }
 }
